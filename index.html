@@ -4,16 +4,23 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Countries Info</title>
-    <link rel="icon" href="./images/earth.png" type="image/x-icon">
+    <link rel="icon" href="./styles/earth.png" type="image/x-icon">
     <link rel="stylesheet" href="./styles/style.css">
 </head>
 <body>
     <h2>Countries Information</h2>
     <div class="selectors-container">
         <h1>REGION</h1>
-        <select id="regionSelector"></select>
+            <select id="regionSelector">
+                <option disabled selected hidden>Pick a region</option>
+                <option value="africa">Africa</option>
+                <option value="america">Americas</option>
+                <option value="asia">Asia</option>
+                <option value="europe">Europe</option>
+                <option value="oceania">Oceania</option>
+            </select>
         <h1>SUBREGION</h1>
-        <select id="subRegionSelector"></select>
+            <select id="subRegionSelector"></select>
     </div>
 
     <div class="content-container">

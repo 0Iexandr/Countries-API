@@ -1,51 +1,21 @@
 const countriesContainer = document.querySelector('#countriesContainer');
 const countriesFactsContainer = document.querySelector('#countriesFacts');
+const regionSelector = document.querySelector('#regionSelector');
 
-let countries = [];
-let regions = ["Africa", "Americas", "Asia", "Europe", "Oceania"];
+const subregionSelector = document.querySelector('#subRegionSelector');
+subregionSelector.disabled = true;
+
+const subregionDisabledOption = document.createElement('option');
+subregionDisabledOption.innerText = 'Pick a sub-region';
+subregionDisabledOption.selected = true;
+subregionDisabledOption.hidden = true;
+subregionSelector.appendChild(subregionDisabledOption);
+
+let regions = [];
 let subregions = [];
 
-const regionSelector = populateRegionSelector();
-const subregionSelector = populateSubRegionSelector();
-
-function setup() {
-    subregionSelector.disabled = true;
-}
-
-function populateRegionSelector() {
-    const regionSelector = document.querySelector('#regionSelector');
-    
-    const regionDisabledOption = document.createElement('option');
-    regionDisabledOption.innerText = 'Pick a region';
-    regionDisabledOption.selected = true;
-    regionDisabledOption.hidden = true;
-    
-    regionSelector.appendChild(regionDisabledOption);
-    regionSelector.addEventListener('change', selectRegion);
-
-    regions.forEach(region => {
-        const regionOption = document.createElement('option');
-        regionOption.innerText = region;
-        regionOption.value = region;
-        regionSelector.appendChild(regionOption);
-    });
-    
-    return regionSelector;
-}
-
-function populateSubRegionSelector() {
-    const subregionSelector = document.querySelector('#subRegionSelector');
-    const subregionDisabledOption = document.createElement('option');
-
-    subregionDisabledOption.innerText = 'Pick a sub-region';
-    subregionDisabledOption.selected = true;
-    subregionDisabledOption.hidden = true;
-    
-    subregionSelector.appendChild(subregionDisabledOption);
-    subregionSelector.addEventListener('change', selectSubregion);
-    
-    return subregionSelector;
-}
+regionSelector.addEventListener('change', selectRegion);
+subregionSelector.addEventListener('change', selectSubregion);
 
 function selectRegion(event) {
     subregionSelector.disabled = false;
@@ -55,17 +25,17 @@ function selectRegion(event) {
         .then(response => response.json())
         .then(data => {
             subregionSelector.replaceChildren([]);
-            subregionSelector.replaceWith(populateSubRegionSelector());
+            subregionSelector.appendChild(subregionDisabledOption);
 
+            data.forEach(region => {
+                regions.push(region);
+            });
 
-            countries = [...data];
-
-            subregions = [...new Set(countries.map(country => country.subregion))];
+            subregions = [...new Set(regions.map(region => region.subregion))];
 
             subregions.forEach(subregion => {
                 const subregionOption = document.createElement('option');
                 subregionOption.innerText = subregion;
-                subregionOption.value = subregion;
                 subregionSelector.appendChild(subregionOption);
             });
         });
@@ -136,5 +106,3 @@ function selectSubregion(event) {
         });
     });
 };
-
-window.onload = setup;
