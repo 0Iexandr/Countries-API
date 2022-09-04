@@ -1,9 +1,7 @@
-const countriesContainer = document.querySelector('#countriesContainer');
-const countriesFactsContainer = document.querySelector('#countriesFacts');
-
-let countries = [];
-let regions = ["Africa", "Americas", "Asia", "Europe", "Oceania"];
+const contentContainer = document.querySelector('.content-container');
+const regions = ["Africa", "Americas", "Asia", "Europe", "Oceania"];
 let subregions = [];
+let countries = [];
 
 const regionSelector = populateRegionSelector();
 const subregionSelector = populateSubRegionSelector();
@@ -13,7 +11,7 @@ function setup() {
 }
 
 function populateRegionSelector() {
-    const regionSelector = document.querySelector('#regionSelector');
+    const regionSelector = document.querySelector('#region-selector');
     
     const regionDisabledOption = document.createElement('option');
     regionDisabledOption.innerText = 'Pick a region';
@@ -34,7 +32,7 @@ function populateRegionSelector() {
 }
 
 function populateSubRegionSelector() {
-    const subregionSelector = document.querySelector('#subRegionSelector');
+    const subregionSelector = document.querySelector('#subregion-selector');
     const subregionDisabledOption = document.createElement('option');
 
     subregionDisabledOption.innerText = 'Pick a sub-region';
@@ -49,7 +47,7 @@ function populateSubRegionSelector() {
 
 function selectRegion(event) {
     subregionSelector.disabled = false;
-    regions = [];
+    contentContainer.replaceChildren([]);
     
     fetch(`https://restcountries.com/v3.1/region/${event.target.value}`)
         .then(response => response.json())
@@ -72,10 +70,15 @@ function selectRegion(event) {
 };
 
 function selectSubregion(event) {
-    countriesContainer.replaceChildren([]);
-    countriesContainer.style.visibility = '';
+    const countriesContainer = document.createElement("div");
+    countriesContainer.id = "countries-container";
+    contentContainer.appendChild(countriesContainer);
+    
+    const countriesFactsContainer = document.createElement("div");
+    countriesFactsContainer.id = 'countries-facts';
     countriesFactsContainer.style.display = 'none';
-        
+    contentContainer.appendChild(countriesFactsContainer);
+            
     countries
         .filter(country => country.subregion === event.target.value)
         .forEach(country => {
