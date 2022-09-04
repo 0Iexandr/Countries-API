@@ -70,6 +70,8 @@ function selectRegion(event) {
 };
 
 function selectSubregion(event) {
+    contentContainer.replaceChildren([]);
+    
     const countriesContainer = document.createElement("div");
     countriesContainer.id = "countries-container";
     contentContainer.appendChild(countriesContainer);
